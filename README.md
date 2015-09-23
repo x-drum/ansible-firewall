@@ -1,7 +1,7 @@
 ansible-firewall
 =========
 
-This role manages firewall rules for linux systems using iptables (netfilter).  
+This role manages firewall rules for linux systems using **iptables** (netfilter).  
 You will able to design you ruleset using role vars or overide the
 whole template and install your own.
 
@@ -73,7 +73,7 @@ Example Playbook
   remote_user: root
   sudo: no
   vars:
-    firewall_script_template: templates/production_rules.cf.j2
+    firewall_script_template: templates/production_rules.sh.j2
   - roles: 
     - { role: firewall }
 ```
