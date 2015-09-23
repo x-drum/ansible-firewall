@@ -1,0 +1,15 @@
+# handlers for firewall
+---
+
+- name: save ruleset
+  tags: 
+    - firewall
+    - configuration
+  command: /etc/init.d/{{ firewall_service_name }} save
+  notify: restart firewall
+
+- name: restart firewall
+  tags: 
+    - firewall
+    - configuration
+  service: name={{ firewall_service_name }} state=restarted

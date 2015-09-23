@@ -1,0 +1,8 @@
+# Install packages for RHEL
+---
+- name: install packages for RHEL
+  tags:
+    - firewall
+    - packages
+  yum: pkg={{item}} state=installed
+  with_items: firewall_packages

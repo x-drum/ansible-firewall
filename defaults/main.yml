@@ -1,0 +1,21 @@
+# defaults for firewall
+---
+firewall_default_owner: root
+firewall_default_group: root
+firewall_service_name: iptables
+firewall_script_template: iptables-ruleset.j2
+firewall_script: /etc/iptables/iptables-ruleset.sh
+iptables_command: /sbin/iptables
+firewall_policy_input: "ACCEPT"
+firewall_policy_forward: "ACCEPT"
+firewall_policy_output: "ACCEPT"
+firewall_chain_prerouting: {}
+firewall_chain_postrouting: {}
+firewall_chain_input: {}
+firewall_chain_forward: {}
+firewall_chain_output: {}
+firewall_chain_nat_prerouting: {}
+firewall_chain_nat_postrouting: {}
+firewall_chain_nat_output: {}
+firewall_extra_chains: {}
+firewall_os_supported: no

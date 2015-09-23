@@ -1,0 +1,21 @@
+## test playbook for postfwd2
+---
+- name: test playbook for firewall
+  remote_user: root
+  hosts: all
+  sudo: no
+  vars:
+    firewall_chain_input:
+      - -m state --state RELATED,ESTABLISHED -j ACCEPT
+      - -s 192.168.99.0/24 -d 192.168.202.119 -m comment --comment "allow foo to bar" -j ACCEPT
+    firewall_chain_forward:
+      - -s 10.3.22.19 -d 192.168.200.0/24 -p udp -m multiport --dports 13000,13111 -j REJECT
+    firewall_chain_nat_prerouting:
+      - -d 10.3.200.0/21 -p udp -m udp --dport 53 -j DNAT --to-destination 192.168.1.1
+    firewall_chain_nat_postrouting:
+      - -d 192.168.1.2/32 -o eth3 -p udp -j SNAT --to-source 192.168.1.200
+      - -s 192.168.1.0/24 -j SNAT --to-source 192.168.1.254
+    firewall_extra_chains:
+      - { name: "LOGDROP", append: "-j LOG --log-prefix 'iptables DROP:' --log-level 7" }
+  roles:
+    - { role: 'firewall' }

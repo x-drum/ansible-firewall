@@ -1,0 +1,23 @@
+# Install packages for Debian
+---
+- name: install packages for Debian
+  tags:
+    - firewall
+    - packages
+  apt: pkg={{item}} state=installed
+  with_items: firewall_packages
+
+- name: check ufw presence for Ubuntu
+  tags:
+    - firewall
+    - packages
+  stat: path=/usr/sbin/ufw
+  register: ufw_binary
+  when: ansible_distribution == "Ubuntu"
+
+- name: disable ufw for Ubuntu
+  tags:
+    - firewall
+    - packages
+  command: /usr/sbin/ufw disable
+  when: ansible_distribution == "Ubuntu" and ufw_binary.stat.exists == True

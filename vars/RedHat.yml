@@ -1,0 +1,7 @@
+# defaults for RedHat
+---
+firewall_script: /etc/sysconfig/iptables-ruleset.sh
+firewall_packages:
+  - iptables
+  - iptables-ipv6
+firewall_os_supported: yes

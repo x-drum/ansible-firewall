@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: "Alessio Cassibba (x-drum)"
+  description: firewall configuration.
+  license: GPLv2
+  min_ansible_version: 1.8
+  platforms:
+  - name: EL
+    versions:
+    - 5
+    - 6
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - networking
+  - system
+dependencies: []

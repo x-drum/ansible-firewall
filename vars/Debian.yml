@@ -1,0 +1,8 @@
+# defaults for Ubuntu
+---
+firewall_script: /etc/iptables/iptables-ruleset.sh
+firewall_packages:
+  - iptables
+  - iptables-persistent
+firewall_service_name: iptables-persistent
+firewall_os_supported: yes

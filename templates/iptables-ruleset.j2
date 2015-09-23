@@ -1,0 +1,67 @@
+#!/bin/bash
+# {{ ansible_managed }}
+#
+# Firewall helper script for linux systems, part of ansible-firewall role:
+# https://github.com/x-drum/ansible-firewall
+#
+# Author: Alessio Cassibba (x-drum) <swapon@gmail.com>
+#
+
+FWCMD={{ iptables_command }}
+
+${FWCMD} -F
+${FWCMD} -t nat -F
+${FWCMD} -X
+
+${FWCMD} -P INPUT {{ firewall_policy_input }}
+${FWCMD} -P OUTPUT {{ firewall_policy_output }}
+${FWCMD} -P FORWARD {{ firewall_policy_forward }}
+
+{% if firewall_extra_chains %}
+{% for xtra_chain in firewall_extra_chains %}
+${FWCMD} -N {{ xtra_chain.name }}
+{% if xtra_chain.append %}
+${FWCMD} -A {{ xtra_chain.name }} {{ xtra_chain.append }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+## PREROUTING chain
+{% for rpre in firewall_chain_prerouting %}
+${FWCMD} -A PREROUTING {{ rpre }}
+{% endfor %}
+
+## POSTROUTING chain
+{% for rpost in firewall_chain_postrouting %}
+${FWCMD} -A POSTROUTING {{ rpost }}
+{% endfor %}
+
+## INPUT chain
+{% for ri in firewall_chain_input %}
+${FWCMD} -A INPUT {{ ri }}
+{% endfor %}
+
+## FORWARD chain
+{% for rf in firewall_chain_forward %}
+${FWCMD} -A FORWARD {{ rf }}
+{% endfor %}
+
+## OUTPUT chain
+{% for ro in firewall_chain_output %}
+${FWCMD} -A OUTPUT {{ ro }}
+{% endfor %}
+
+## NAT PREROUTING chain
+{% for nat_rpre in firewall_chain_nat_prerouting %}
+${FWCMD} -A PREROUTING -t nat {{ nat_rpre }}
+{% endfor %}
+
+## NAT POSTROUTING chain
+{% for nat_rpost in firewall_chain_nat_postrouting %}
+${FWCMD} -A POSTROUTING -t nat {{ nat_rpost }}
+{% endfor %}
+
+## NAT OUTPUT chain
+{% for nat_ro in firewall_chain_nat_output %}
+${FWCMD} -A OUTPUT -t nat {{ nat_ro }}
+{% endfor %}

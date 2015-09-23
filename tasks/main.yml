@@ -1,0 +1,49 @@
+# tasks for firewall
+---
+
+- name: set OS dependent variables
+  tags:
+    - firewall
+    - prereq
+  include_vars: "{{ item }}"
+  with_first_found:
+   - "{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_distribution }}.yml"
+   - "{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+   - "{{ ansible_os_family }}.yml"
+   - default.yml
+
+- include: main_redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: main_debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: setup firewall script
+  tags:
+    - firewall
+    - files
+  template: > 
+    src={{ firewall_script_template }}
+    dest={{ firewall_script }}
+    owner={{ firewall_default_owner }}
+    group={{ firewall_default_group }}
+    mode=0755
+  when: firewall_os_supported == True
+
+- name: enable service
+  tags:
+    - firewall
+    - configuration
+  service: name={{ firewall_service_name }} enabled=yes state=started
+  when: firewall_os_supported == True
+
+- name: activate ruleset
+  tags:
+    - firewall
+    - configuration
+  command: "{{ firewall_script }}"
+  notify:
+    - save ruleset
+  when: firewall_os_supported == True
+
