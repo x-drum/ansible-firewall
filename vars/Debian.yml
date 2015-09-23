@@ -1,4 +1,4 @@
-# defaults for Ubuntu
+# defaults for Debian
 ---
 firewall_script: /etc/iptables/iptables-ruleset.sh
 firewall_packages:
