@@ -62,7 +62,8 @@ Example Playbook
       - -d 192.168.1.2/32 -o eth3 -p udp -j SNAT --to-source 192.168.1.200
       - -s 192.168.1.0/24 -j SNAT --to-source 192.168.1.254
     firewall_extra_chains:
-      - { name: "LOGDROP", append: "-j LOG --log-prefix 'iptables DROP:' --log-level 7" }
+      - { name: "LOGDROP", append: { "-j LOG --log-prefix 'iptables DROP:' --log-level 7", "-j DROP"} }
+      - { name: "FOO", append: { "-j RETURN" } }
   - roles: 
     - { role: firewall }
 ```

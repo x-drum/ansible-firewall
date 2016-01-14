@@ -21,7 +21,9 @@ ${FWCMD} -P FORWARD {{ firewall_policy_forward }}
 {% for xtra_chain in firewall_extra_chains %}
 ${FWCMD} -N {{ xtra_chain.name }}
 {% if xtra_chain.append %}
-${FWCMD} -A {{ xtra_chain.name }} {{ xtra_chain.append }}
+{% for xtra_append in xtra_chain.append %}
+${FWCMD} -I {{ xtra_chain.name }} {{ xtra_append }}
+{% endfor %}
 {% endif %}
 {% endfor %}
 {% endif %}
